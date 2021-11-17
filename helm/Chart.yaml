@@ -1,0 +1,4 @@
+apiVersion: v1
+description: Production environment
+name: gitops-argocd
+version: "0.1.0"

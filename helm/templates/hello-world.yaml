@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: demo-app
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  syncPolicy:
+    automated:
+      prune: true
+  destination:
+    namespace: prodution
+    server: https://kubernetes.default.svc
+  project: production
+  source:
+    path: helm
+    repoURL: https://github.com/Zine69/Code-review.git
+    targetRevision: master
+    helm:
+      values: |
+        ingress:
+          annotations:
+            cert-manager.io/cluster-issuer: letsencrypt-staging
+          hosts:
+            - host: apps-test.ddns.net
+          tls:
+            - secretName: demo-app-tls
+              hosts:
+                - apps-test.ddns.net
